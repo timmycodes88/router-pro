@@ -12,6 +12,7 @@ export async function profileLoader({ params: { acellusID } }) {
 
   //* Get the Profile
   let profile = await ProfileAPI.get(requestAcellusID)
+  profile.name = `${profile.firstName} ${profile.lastName[0]}`
 
   //! Check for Errors
 
