@@ -1,0 +1,84 @@
+{
+    "student": {
+        "acellusID": "1",
+        "firstName": "Tim",
+        "lastName": "Van lerberg"
+    },
+    "profile": [
+        {
+            "acellusID": "1",
+            "firstName": "Tim",
+            "lastName": "Van lerberg"
+        },
+        {
+            "acellusID": "2",
+            "firstName": "Bill",
+            "lastName": "Self"
+        },
+        {
+            "acellusID": "3",
+            "firstName": "Sarah",
+            "lastName": "Parks"
+        }
+    ],
+    "profile-img": [
+        {
+            "acellusID": "1",
+            "url": "https://fastly.picsum.photos/id/883/200/200.jpg?hmac=evNCTcW3jHI_xOnAn7LKuFH_YkA8r6WdQovmsyoM1IY"
+        },
+        {
+            "acellusID": "2",
+            "url": "https://fastly.picsum.photos/id/334/200/200.jpg?hmac=Q9rDA3ngheQsAB7HoLSjpzYS0kqelfZIJBGDkW-4wgk"
+        },
+        {
+            "acellusID": "3",
+            "url": "https://fastly.picsum.photos/id/996/200/200.jpg?hmac=nRtkfqKyD3p2uHiFO5LmGt31UcH3NKWg80H5yUkZ8_k"
+        }
+    ],
+    "stats": [
+        {
+            "acellusID": "1",
+            "gold": "100",
+            "silver": "200",
+            "bronze": "300",
+            "GPA": "3.5"
+        },
+        {
+            "acellusID": "2",
+            "gold": "101",
+            "silver": "20",
+            "bronze": "3005",
+            "GPA": "3.75"
+        },
+        {
+            "acellusID": "3",
+            "gold": "222",
+            "silver": "333",
+            "bronze": "1",
+            "GPA": "4.0"
+        }
+    ],
+    "activity": {
+        "acellusID": "2",
+        "posts": [
+            {
+                "postID": "1",
+                "title": "Post 1",
+                "body": "This is the body of post 1",
+                "likes": 4
+            },
+            {
+                "postID": "2",
+                "title": "Post 2",
+                "body": "This is the body of post 2",
+                "likes": 2
+            },
+            {
+                "postID": "3",
+                "title": "Post 3",
+                "body": "This is the body of post 3",
+                "likes": 1
+            }
+        ]
+    }
+}
