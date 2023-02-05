@@ -8,11 +8,13 @@ const URL = "http://localhost:3001/"
  */
 export default async function request(endpoint, options) {
   const res = await fetch(URL + endpoint, options)
-  if (!res.ok) return res.status
 
   let data = await res.json()
 
   if (Array.isArray(data)) data = data[0]
+
+  if (!res.ok && !data?.error)
+    data = { error: res.status, error_msg: res.statusText }
 
   return data
 }
@@ -68,4 +70,4 @@ export const patch = async (endpoint, id, body) => {
   })
 }
 
-export const isErrorResponse = res => !!res.error
+export const isErrorResponse = res => !!res?.error

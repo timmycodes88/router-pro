@@ -11,7 +11,7 @@ export default function Profile() {
   const { updatePreferences } = useProfileActions()
 
   //* Destructure the Profile Data
-  const { name, profileImg, preferences, stats, activity } = profile
+  const { name, imageURL, preferences, stats, activity } = profile
 
   //* State for Edit Mode
   const [editing, setEditing] = useState(false)
@@ -34,7 +34,7 @@ export default function Profile() {
     <ProfileWrapper bgImg={preferences.bgImg}>
       <Header>
         <PersonCard>
-          <ProfileAvatar url={profileImg} name={name} />
+          <ProfileAvatar url={imageURL} name={name} />
           <h3>{name}</h3>
         </PersonCard>
         {!isMyProfile && <button>Follow</button>}

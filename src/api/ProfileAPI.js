@@ -7,10 +7,7 @@ const Endpoint = "profile"
  * @property {string} acellusID
  * @property {string} firstName
  * @property {string} lastName
- * @property {Object | undefined} [preferences]
- * @property {string} [preferences.mood]
- * @property {string} [preferences.futureOccupation]
- * @property {string} [preferences.bgImg]
+ * @property {Preferences} [preferences]
  *
  *
  *
@@ -29,20 +26,19 @@ const ProfileAPI = {
   /**
    * Get the Profile Image of a User
    * @param {string} acellusID
-   * @returns {Promise<{imageURL: string} | ErrorResponse}}
+   * @returns {Promise<{url: string} | ErrorResponse}}
    */
   getProfileImg: acellusID => get(Endpoint + "-img", { acellusID }),
   /**
    * Update Preferences of a User
    * @param {string} acellusID
-   * @param {Object} preferences
-   * @param {string} [preferences.mood]
-   * @param {string} [preferences.futureOccupation]
-   * @param {string} [preferences.bgImg]
-   * @returns {Promise<? | ErrorResponse>}
+   * @param {Preferences} preferences
+   * @returns {Promise<{} | ErrorResponse>}
    */
   updatePreferences: (acellusID, preferences) =>
     patch(Endpoint, acellusID, preferences),
 }
 
 export default ProfileAPI
+
+/**@typedef {import("../features/profile/ProfileRoute").Preferences} Preferences */

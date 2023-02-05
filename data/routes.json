@@ -1,0 +1,4 @@
+{
+    "/:resource/:id/show": "/:resource/:id",
+    "/activity/posts/:id": "/activity/posts?postID=:id"
+  }

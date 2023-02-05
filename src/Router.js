@@ -19,6 +19,7 @@ export const router = createBrowserRouter([
         element: <Profile />,
         loader: profileLoader,
         action: profileAction,
+        shouldRevalidate: () => false,
       },
     ],
   },
