@@ -23,9 +23,12 @@ const ActivityAPI = {
   /**
    * Patch a Like
    * @param {string} postID
+   * @param {{
+   * acellusID: string
+   * }} body
    * @returns {Promise<{} | ErrorResponse>}
    */
-  patchLike: postID => patch(Endpoint + "/posts", postID, { likes: 5 }),
+  patchLike: (postID, body) => patch(Endpoint + "/posts", postID, { likes: 5 }),
   /**
    * Post a Comment
    * @param {{

@@ -50,7 +50,7 @@ import { isErrorResponse } from "../../utils/request"
  * @property {string} name
  * @property {string} [imageURL]
  */
-let PROFILE
+let PROFILE //* This is the Global Profile Object
 
 /**
  * This is the Profile Loader
@@ -70,7 +70,7 @@ export async function profileLoader({ params: { acellusID } }) {
   //* If the URL has an ID use it, else use the student's ID
   const requestAcellusID = acellusID ? acellusID : student.acellusID
 
-  //* Get the Profile
+  //* Get the initial Profile Response
   let profile = await ProfileAPI.get(requestAcellusID)
 
   //! Check for Errors
@@ -80,24 +80,20 @@ export async function profileLoader({ params: { acellusID } }) {
   profile.name = `${profile.firstName} ${profile.lastName[0]}`
   profile.preferences = profile.preferences || {}
 
-  //* Get the Profile URL
-  let imageURL = await ProfileAPI.getProfileImg(requestAcellusID)
-
-  //! Check for Errors
-  if (isErrorResponse(profile)) throw new Error("Failed Fetching Profile Image")
-
-  //* Add the Profile URL to the Profile
-  profile.imageURL = imageURL?.url
-
-  //* Get the Stats & Activity
-  const [stats, activity] = await Promise.all([
+  //* Get the ProfileAvatar, Stats & Activity
+  const [imageURL, stats, activity] = await Promise.all([
+    ProfileAPI.getProfileImg(requestAcellusID),
     StatsAPI.get(requestAcellusID),
     ActivityAPI.getUserPosts(requestAcellusID),
   ])
 
   //! Check for Errors
+  if (isErrorResponse(profile)) throw new Error("Failed Fetching Profile Image")
   if (isErrorResponse(stats)) throw new Error("Problem Fetching Stats")
   if (isErrorResponse(activity)) throw new Error("Problem Fetching Activity")
+
+  //* Add the Profile URL to the Profile
+  profile.imageURL = imageURL?.url
 
   //* Add the Stats to profile
   profile.stats = stats
@@ -106,7 +102,7 @@ export async function profileLoader({ params: { acellusID } }) {
   if (activity?.posts)
     // Add the Name and Profile Image to each Post
     profile.activity = activity.posts
-      //So I'm filtering out the post that don't match the acellusID
+      //So I'm filtering out the post that don't match the acellusID because the API is returning all posts
       .filter(post => post.acellusID === profile.acellusID)
       .map(post => ({
         ...post,
@@ -121,7 +117,7 @@ export async function profileLoader({ params: { acellusID } }) {
   return { profile, isMyProfile }
 }
 
-//* Action Types
+//* ------------- Action Types -------------
 const UPDATE_PREFERENCES = "UPDATE_PREFERENCES"
 const LIKE_POST = "LIKE_POST"
 const GET_COMMENTS = "GET_COMMENTS"
@@ -136,7 +132,7 @@ export async function profileAction({ request }) {
 
   /**
    * @typedef {Object} data
-   * @property {UPDATE_PREFERENCES | LIKE_POST | GET_COMMENTS} type
+   * @property {UPDATE_PREFERENCES | LIKE_POST | GET_COMMENTS | ADD_COMMENT} type
    * @property {Preferences} [preferences]
    * @property {string} [postID]
    */
@@ -157,13 +153,12 @@ export async function profileAction({ request }) {
       break
     default:
       throw new Error("Invalid Action Type")
-      break
   }
 
   return { profile: PROFILE }
 }
 
-//* ACTION FUNCTIONS
+//* ------------- ACTION FUNCTIONS -------------
 //* [ these are async functions that update PROFILE before it is returned in the ACTION ]
 
 /**
@@ -171,7 +166,7 @@ export async function profileAction({ request }) {
  * @param {Preferences} preferences
  */
 async function updatePreferences(preferences) {
-  //! Insure we got the Data
+  //! Make sure required args were provided
   if (!preferences) throw new Error("Need Preferences to run this type")
   //* Get the Student's ID
   const { acellusID } = await Student
@@ -190,18 +185,22 @@ async function updatePreferences(preferences) {
  * @param {string} postID
  */
 async function likePost(postID) {
-  //* Handle liking a post
+  //! Make sure required args were provided
   if (!postID) throw new Error("No Post ID Provided")
   //* Get the Student's ID
   const { acellusID } = await Student
   //* Like the Post
-  const res = await ActivityAPI.patchLike(postID)
-  console.log(res)
+  const res = await ActivityAPI.patchLike(postID, { acellusID })
   //! Check for Errors
   if (isErrorResponse(res)) throw new Error("Failed Liking Post")
   //* Update the Global Profile
-
-  console.log("Action thinks you liked it")
+  PROFILE.activity = PROFILE.activity.map(post => {
+    if (post.postID === postID) {
+      post.likes = post.likes + 1
+      post.liked = true
+    }
+    return post
+  })
 }
 
 /**
@@ -226,32 +225,38 @@ async function addComment(postID, message) {
  * @param {string} postID
  */
 async function getComments(postID) {
-  //* Handle getting comments for a post
+  //! Make sure required args were provided
   if (!postID) throw new Error("No Post ID Provided")
+
   //* Get Comments for Post
   const res = await ActivityAPI.getComments(postID)
+
   //! Check for Errors
   if (isErrorResponse(res)) throw new Error("Failed Fetching Comments")
+
   //* Add the Name and Profile Image to each Comment
-  const newComments = await Promise.all(
-    res.comments.map(async comment => {
-      // Get Commenter's Profile
-      const commenter = await ProfileAPI.get(comment.acellusID)
-      //Check for Errors
-      if (isErrorResponse(commenter))
-        throw new Error("Failed Fetching Profile of Commenter")
-      // Manipulate the Comment with the Commenter's Name
-      comment.name = `${commenter.firstName} ${commenter.lastName[0]}`
-      // Get Commenter's Profile Image
-      const commenterImage = await ProfileAPI.getProfileImg(comment.acellusID)
-      // Check for Errors
-      if (isErrorResponse(commenterImage))
-        throw new Error("Failed Fetching Profile Image of Commenter")
-      // Set the Comment's Profile Image
-      comment.imageURL = commenterImage?.url
-      return comment //This is a Promise that should be resolved
-    })
-  )
+  //Map over the comments and return array of promises (that will resolve to the comment with the name and imageURL)
+  const commentPromises = res.comments.map(async comment => {
+    // Get the Commenter's Profile and Image
+    const [profile, imageURL] = await Promise.all([
+      ProfileAPI.get(comment.acellusID),
+      ProfileAPI.getProfileImg(comment.acellusID),
+    ])
+
+    //!Check for Errors
+    if (isErrorResponse(profile))
+      throw new Error("Failed Fetching Profile of Commenter")
+    if (isErrorResponse(imageURL))
+      throw new Error("Failed Fetching Profile Image of Commenter")
+
+    // Manipulate the Comment with the Commenter's Name and Image
+    comment.name = `${profile.firstName} ${profile.lastName[0]}`
+    comment.imageURL = imageURL?.url
+
+    return comment //This is a Promise that needs to be resolved
+  })
+
+  const newComments = await Promise.all(commentPromises)
 
   //* Update the Global Profile with the Modified comments
   PROFILE.activity = PROFILE.activity.map(post => {
@@ -260,7 +265,7 @@ async function getComments(postID) {
   })
 }
 
-//* FRONTEND HOOKS
+//* ------------- FRONTEND HOOKS -------------
 
 /**
  * Get Data for Profile Modal
