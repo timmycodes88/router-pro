@@ -13,35 +13,35 @@ and Full JSDoc Coverage
 - Some Pages require multiple endpoints
   ex) Getting the Profile, Profile Image, Posts and getting the Comments of a post, etc.
 
-**1. Create your API Objects (see ProfileAPI.js)**
+**1. Create your API Objects**
 
 - These are Stand Alone Files with a default export
-  ex) ProfileAPI.js or ActivityAPI.js
-
-  const Endpoint = '/rest/student/profile
-  const ProfileAPI = {
-  get: (params) => get(Endpoint, params)
-  post: (params) => post(Endpoint, params)
-  }
-  export default ProfileAPI
 
 - JSDoc all the Functions and Type Def the Response
 
-**2. Create The Route File (see ProfileRoute.js)**
+- See ProfileAPI.js & ActivityAPI.js
 
-1.  Create an Object Model that is already manipulated how you want to serve it to the page
-2.  Declare an Object with all Caps for your Global Variable
+**2. Create The Route File**
+
+1.  Create a file named _PageNameRoute.js_ in the /features/page-name folder
+2.  Create an Object Model that is already manipulated how you want to serve it to the page
+
+- You'll see the difference from ProfileResponse in ProfileAPI and Profile in ProfileRoute.js
+
+3.  Declare an Object with all Caps for your Global Variable
 
 - Lines (8-53) of ProfileRoute.js
 
 **3. Write your Async Loader Function**
 
-1. Make your Initial API calls to create the Object as Described above
+1. Make your Initial GET API calls to create the Object as Described above
 2. Check for error responses and throw Errors if they happen
 3. Set your Global Variable to be this Object
 4. Return the Global variable and any other useful loader data
 
 - Lines (55-118) of ProfileRoute.js
+
+NOTE: Every Loader/Action can get the logged-in student object with `const student = await Student`
 
 **4. Create all your Action Types**
 
