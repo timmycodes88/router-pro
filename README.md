@@ -103,11 +103,11 @@ NOTE 2: Every Function should have a JSDoc
 ### 1. Import your usePage Hook and Populate your page
 
 - Destructure when possible to make the code cleaner
-- Setup state's default value to the data from the Hook (see newPreferences state in Profile.js)
+- Setup state's default values to the data from the Hook (see newPreferences state in Profile.js)
 
 ### 2. Import your usePageActions Hook and add functionality to your page
 
-- Note that with both of these hooks, they can be used anywhere within the page so avoid prop drilling
-  and just use the hooks where they are needed
+- use the action functions to make your own onClick functions and wire them to the buttons
+- Note that with both of these hooks, they can be used anywhere within the page so avoid prop drilling and just use the hooks where they are needed
 
-### 3. CELEBRATE this Page is DONE
+### 3. CELEBRATE this Page is Fully Populated and Functional
