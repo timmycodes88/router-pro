@@ -114,7 +114,7 @@ export async function profileLoader({ params: { acellusID } }) {
   //* Set Profile as a Global Variable
   PROFILE = profile
 
-  return { profile, isMyProfile }
+  return { profile: PROFILE, isMyProfile }
 }
 
 //* ------------- Action Types -------------
@@ -122,6 +122,7 @@ const UPDATE_PREFERENCES = "UPDATE_PREFERENCES"
 const LIKE_POST = "LIKE_POST"
 const GET_COMMENTS = "GET_COMMENTS"
 const ADD_COMMENT = "ADD_COMMENT"
+
 /**
  * This is the Profile Action
  * @param {import("react-router-dom").ActionFunctionArgs} props
