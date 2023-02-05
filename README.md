@@ -3,7 +3,7 @@
 This is a Project designed to outline how to effectively
 Retrieve Data from the API and handle Errors with Routes.
 Then also how to pass the Data & Functions Cleanly with hooks
-and Full JSDocs Coverage
+and Full JSDoc Coverage
 
 ## Step by Step Guide to Building Route Files
 
@@ -46,6 +46,7 @@ and Full JSDocs Coverage
 **4. Create all your Action Types**
 
 1. This is where you plan all possible functions for a user
+   ex) UPDATE_PREFERENCES, LIKE_POST
 
 - Lines (120-124) of ProfileRoute.js
 
@@ -57,8 +58,30 @@ and Full JSDocs Coverage
    later you will manipulate your Global Variable based on the Case
 4. Return your Global Variable
 
-- Lines (126-164) of profileRoute.js
+- Lines (126-164) of ProfileRoute.js
 
-**6. Coming Soon**
+**6. Write your async manipulator functions and add them to the Action Function**
+
+- Name these in the camel case version of your ACTION_TYPES
+
+1. Check that you have the right args, throw error if not
+2. Make API calls with the data
+3. Return an Updated aspect of your Global Variable
+4. Go to your Action and await this function and update the Global variable with the new data
+
+- Lines (166-282) of ProfileRoute.js
+
+**7. Create 2 Hooks for Using the Route**
+
+1. First one is for passing the data, generally named _usePageName_ - Lines (286-298) of ProfileRoute.js
+2. Second on is called _usePageNameActions_ and returns a object with each possible submit to be used on the front end - Lines (300-337) of ProfileRoute.js
+
+**8. CELEBRATE**
+
+- You now have a complete Route file that can handle all request and is easy to use on the pages
+
+NOTE 1: With this Method you should not revalidate the Loader and in the data hook return the action global variable and use the loader one once - ex) Lines (286-298) of ProfileRoute.js
+
+NOTE 2: Every Function should have a JSDoc
 
 ## Step by Step Guide to using Route Hooks
