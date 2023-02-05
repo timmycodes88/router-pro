@@ -67,3 +67,5 @@ export const patch = async (endpoint, id, body) => {
     body: JSON.stringify(body),
   })
 }
+
+export const isErrorResponse = res => !!res.error

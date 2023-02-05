@@ -72,20 +72,40 @@
       {
         "postID": "1",
         "title": "Post 1",
-        "body": "This is the body of post 1",
+        "body": "post 1",
         "likes": 4
       },
       {
         "postID": "2",
         "title": "Post 2",
-        "body": "This is the body of post 2",
+        "body": "post 2",
         "likes": 2
       },
       {
         "postID": "3",
         "title": "Post 3",
-        "body": "This is the body of post 3",
+        "body": "post 3",
         "likes": 1
+      }
+    ]
+  },
+  "activity-comments": {
+    "postID": "1",
+    "comments": [
+      {
+        "commentID": "1",
+        "body": "comment 1",
+        "likes": 1
+      },
+      {
+        "commentID": "2",
+        "body": "comment 2",
+        "likes": 2
+      },
+      {
+        "commentID": "3",
+        "body": "comment 3",
+        "likes": 3
       }
     ]
   }

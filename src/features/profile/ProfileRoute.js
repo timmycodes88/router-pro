@@ -1,8 +1,9 @@
-import { useLoaderData, useSubmit } from "react-router-dom"
+import { useActionData, useLoaderData, useSubmit } from "react-router-dom"
 import ActivityAPI from "../../api/ActivityAPI"
 import ProfileAPI from "../../api/ProfileAPI"
 import StatsAPI from "../../api/StatsAPI"
 import { Student } from "../../AppRoute"
+import { isErrorResponse } from "../../utils/request"
 
 /**
  *
@@ -26,6 +27,7 @@ export async function profileLoader({ params: { acellusID } }) {
   let profile = await ProfileAPI.get(requestAcellusID)
 
   //! Check for Errors
+  if (isErrorResponse(profile)) throw new Error("Profile Not Found")
 
   //* Manipulate the Profile
   profile.name = `${profile.firstName} ${profile.lastName[0]}`
@@ -35,6 +37,7 @@ export async function profileLoader({ params: { acellusID } }) {
   let profileImg = await ProfileAPI.getProfileImg(requestAcellusID)
 
   //! Check for Errors
+  if (isErrorResponse(profile)) throw new Error("Failed Fetching Profile Image")
 
   //* Add the Profile URL to the Profile
   profile.profileImg = profileImg?.url
@@ -46,10 +49,15 @@ export async function profileLoader({ params: { acellusID } }) {
   ])
 
   //! Check for Errors
+  if (isErrorResponse(stats)) throw new Error("Problem Fetching Stats")
+  if (isErrorResponse(stats)) throw new Error("Problem Fetching Activity")
 
   //* Add the Stats & Activity to the Profile
   profile.stats = stats
   profile.activity = activity?.posts || []
+
+  //* Set Profile as a Global Variable
+  PROFILE = profile
 
   return { profile, isMyProfile }
 }
@@ -65,13 +73,26 @@ export async function profileAction({ request }) {
 
   switch (request.method) {
     case "PATCH":
-      //* Get the Preferences Object from the Request Data
+      //* Get the Student's ID
       const { acellusID } = await Student
-      await ProfileAPI.updatePreferences(acellusID, { preferences: data })
-      return "success"
+      //* Update the Preferences
+      const res = await ProfileAPI.updatePreferences(acellusID, {
+        preferences: data,
+      })
+      //! Check for Errors
+      if (isErrorResponse(res)) throw new Error("Failed Updating Preferences")
+      //* Update the Global Profile
+      PROFILE.preferences = data
+      break
     default:
-      return null
+      //* Handle getting comments for a post
+      if (data.postID) {
+        const comments = await ActivityAPI.getComments(data.postID)
+      }
+      break
   }
+
+  return { profile: PROFILE }
 }
 
 /**
@@ -101,18 +122,22 @@ export async function profileAction({ request }) {
  * futureOccupation?: string,
  * bgImg?: string
  * }} [preferences]
- *
- *
- *
+ */
+let PROFILE
+//* TO SHARE THE PROFILE DATA BETWEEN THE PROFILE LOADER AND THE PROFILE ACTION
+
+/**
+ * Get Data for Profile Modal
  * @returns {{
  *   profile: Profile,
  *   isMyProfile: boolean
  * }} Profile
  */
 export function useProfile() {
-  const { profile, isMyProfile } = useLoaderData()
+  const { profile: initialProfile, isMyProfile } = useLoaderData()
+  const actionData = useActionData()
 
-  return { profile, isMyProfile }
+  return { profile: actionData?.profile || initialProfile, isMyProfile }
 }
 
 /**
