@@ -28,7 +28,7 @@ and Full JSDoc Coverage
 
 - You'll see the difference from a ProfileResponse in ProfileAPI and a Profile Model in ProfileRoute.js
 
-3.  Declare an Object with all Caps for your Global Variable
+3.  Declare a const with all Caps for your Global Variable
 
 - Lines (8-53) of ProfileRoute.js
 
