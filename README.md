@@ -23,7 +23,7 @@ and Full JSDoc Coverage
 
 ### 2. Create The Route File
 
-1.  Create a file named _PageNameRoute.js_ in the /features/page-name folder
+1.  Create a file named _PageRoute.js_ in the /features/page-name folder
 2.  Create an Object Model (with typedef) that is already manipulated how you want to serve it to the page
 
 - You'll see the difference from a ProfileResponse in ProfileAPI and a Profile Model in ProfileRoute.js
@@ -76,12 +76,12 @@ NOTE: Every Loader/Action can get the Global Student object with `const student 
 
 ### 7. Create 2 Hooks for Using the Route
 
-1. First one is for passing the data through to the component and is named _usePageName_
+1. First one is for passing the data through to the component and is named _usePage_
 
 - Here you use the useLoaderData() and useActionData() hooks to create a custom hook consolidating the data into a simple usePage hook
 - Lines (286-298) of ProfileRoute.js
 
-2. Second one is called _usePageNameActions_ and returns a object with each possible submit to easily be used on the front-end
+2. Second one is called _usePageActions_ and returns a object with each possible submit to easily be used on the front-end
 
 - You will use the useSubmit() hook create the functions that submit the required data to your action. Each submit will have the required data and a type: ACTION_TYPE so the Action function knows what to do
 - Lines (300-337) of ProfileRoute.js
@@ -100,12 +100,12 @@ NOTE 2: Every Function should have a JSDoc
 
 - These are at the bottom of the Route File and the Type Doc of the main data is at the Top of the File
 
-### 1. Import your Data Hook and Populate your page
+### 1. Import your usePage Hook and Populate your page
 
 - Destructure when possible to make the code cleaner
 - Setup state's default value to the data from the Hook (see newPreferences state in Profile.js)
 
-### 2. Import the Actions Hook and add functionality to your page
+### 2. Import your usePageActions Hook and add functionality to your page
 
 - Note that with both of these hooks, they can be used anywhere within the page so avoid prop drilling
   and just use the hooks where they are needed
