@@ -76,7 +76,7 @@ NOTE: Every Loader/Action can get the Global Student object with `const student 
 
 ### 7. Create 2 Hooks for Using the Route
 
-1. First one is for passing the data named _usePageName_
+1. First one is for passing the data through to the component and is named _usePageName_
 
 - Here you use the useLoaderData() and useActionData() hooks to create a custom hook consolidating the data into a simple usePage hook
 - Lines (286-298) of ProfileRoute.js
