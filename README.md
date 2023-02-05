@@ -94,7 +94,7 @@ NOTE 1: With this Method you should not revalidate the Loader and in the data ho
 
 NOTE 2: Every Function should have a JSDoc
 
-## Step by Step Guide to using Route Hooks
+## Step by Step Guide to using Our Custom Route Hooks
 
 ### 0. Look into the JSDoc's of the route to see the Data and Actions you can use on this page
 
