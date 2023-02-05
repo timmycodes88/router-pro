@@ -16,9 +16,7 @@ and Full JSDoc Coverage
 ### 1. Create your API Objects
 
 - These are Stand Alone Files with a default export
-
 - JSDoc all the Functions and Type Def the Responses
-
 - See ProfileAPI.js & ActivityAPI.js
 
 ### 2. Create The Route File
