@@ -4,6 +4,11 @@ import EmptyState from "../../../components/EmptyState"
 import ProfileAvatar from "../../../components/ProfileAvatar"
 import { useProfileActions } from "../ProfileRoute"
 
+/**
+ *
+ * @param {{ activity: Post[] }} props
+ * @returns {JSX.Element} ActivityFeed
+ */
 export default function ActivityFeed({ activity }) {
   if (!activity.length)
     return <EmptyState title="No posts yet" message="Check back later!" />
@@ -17,6 +22,11 @@ export default function ActivityFeed({ activity }) {
   )
 }
 
+/**
+ *
+ * @param {Post} props
+ * @returns {JSX.Element} Post
+ */
 const Post = ({ postID, name, body, likes, comments }) => {
   const { loadComments, likePost } = useProfileActions()
 
@@ -60,3 +70,7 @@ const PostBody = tw.div`mt-4`
 const PostFooter = tw.div`mt-4`
 const Comments = tw.div`mt-4 flex flex-col gap-2`
 const CommentCard = tw.div`flex items-center gap-4 justify-between bg-amber-100 p-2 rounded`
+
+/**
+ * @typedef {import("../ProfileRoute").Post} Post
+ */

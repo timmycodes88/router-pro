@@ -1,5 +1,3 @@
-import StudentAPI from "./api/StudentAPI"
-
 /**
  * @typedef {Object} Student
  * @property {string} acellusID
@@ -7,11 +5,13 @@ import StudentAPI from "./api/StudentAPI"
  * @property {string} lastName
  */
 
+import { get } from "./utils/request"
+
 /** @type {Promise<Student>} */
 export let Student
 
 export async function appLoader() {
-  Student = StudentAPI.get()
+  Student = get("student")
   const student = await Student
   return { student }
 }
