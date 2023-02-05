@@ -73,12 +73,12 @@ NOTE: Every Loader/Action can get the Global Student object with `const student 
 
 ### 7. Create 2 Hooks for Using the Route
 
-1. First one is for passing the data, generally named _usePageName_ - Lines (286-298) of ProfileRoute.js
-2. Second on is called _usePageNameActions_ and returns a object with each possible submit to be used on the front end - Lines (300-337) of ProfileRoute.js
+1. First one is for passing the data named _usePageName_ - Lines (286-298) of ProfileRoute.js
+2. Second one is called _usePageNameActions_ and returns a object with each possible submit to easily be used on the front end - Lines (300-337) of ProfileRoute.js
 
 ### 8. CELEBRATE
 
-- You now have a complete Route file that can handle all request and is easy to use on the pages
+- You now have a complete Route file that can handle all requests and is easy to use on the frontend
 
 NOTE 1: With this Method you should not revalidate the Loader and in the data hook return the action global variable and use the loader one once - ex) Lines (286-298) of ProfileRoute.js
 
