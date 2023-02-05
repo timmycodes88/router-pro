@@ -7,7 +7,7 @@ and Full JSDoc Coverage
 
 ## Step by Step Guide to Building Route Files
 
-**0. Plan the Required API Calls required for Building the page's Features**
+**0. Plan the Required API Calls for Building the page's Features**
 
 - This is Generally some kind of main get and post actions
 - Some Pages require multiple endpoints
@@ -85,3 +85,19 @@ NOTE 1: With this Method you should not revalidate the Loader and in the data ho
 NOTE 2: Every Function should have a JSDoc
 
 ## Step by Step Guide to using Route Hooks
+
+**0. Look into the JSDoc's of the route to see the Data and Actions you can use on this page**
+
+- These are at the bottom of the Route File and the Type Doc of the main data is at the Top of the File
+
+**1. Import your Data Hook and Populate your page**
+
+- Destructure when possible to make the code cleaner
+- Setup state's default value to the data from the Hook (see newPreferences state in Profile.js)
+
+**2. Import the Actions Hook and add functionality to your page**
+
+- Note that with both of these hooks, they can be used anywhere within the page so avoid prop drilling
+  and just use the hooks where they are needed
+
+**3. CELEBRATE this Page is DONE**
