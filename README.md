@@ -1,9 +1,4 @@
 
-# student: 
-    get:
-        acellusID - string
-        firstName - string
-        lastName - string
+# Created by TimmyCodes88
 
-# profile:
-     
+## Example of Route File
