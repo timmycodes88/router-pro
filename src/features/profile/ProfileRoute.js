@@ -200,12 +200,7 @@ async function likePost(postID) {
   //! Check for Errors
   if (isErrorResponse(res)) throw new Error("Failed Liking Post")
   //* Update the Global Profile
-  // PROFILE.activity = PROFILE.activity.map(post => {
-  //   if (post.postID === postID) {
-  //     post.likes = res.likes
-  //   }
-  //   return post
-  // })
+
   console.log("Action thinks you liked it")
 }
 
