@@ -1,12 +1,12 @@
 import EmptyState from "../../../components/EmptyState"
 
-export default function ActivityFeed({ posts }) {
-  if (!posts.length)
+export default function ActivityFeed({ activity }) {
+  if (!activity.length)
     return <EmptyState title="No posts yet" message="Check back later!" />
 
   return (
     <ul>
-      {posts.map(({ postID, title, body, likes }) => (
+      {activity.map(({ postID, title, body, likes }) => (
         <li key={postID}>
           <h4>Title: {title}</h4>
           <p>{body}</p>
