@@ -17,7 +17,7 @@ and Full JSDoc Coverage
 
 - These are Stand Alone Files with a default export
 
-- JSDoc all the Functions and Type Def the Response
+- JSDoc all the Functions and Type Def the Responses
 
 - See ProfileAPI.js & ActivityAPI.js
 

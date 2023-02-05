@@ -2,22 +2,37 @@ import { get, patch, post } from "../utils/request"
 
 const Endpoint = "activity"
 
+/**
+ * @typedef {Object} ActivityResponse
+ * @property {string} postID
+ * @property {string} acellusID
+ * @property {string} body
+ * @property {number} [likes]
+ *
+ *
+ * @typedef {Object} CommentResponse
+ * @property {string} commentID
+ * @property {string} body
+ * @property {string} acellusID
+ * @property {number} [likes]
+ */
+
 const ActivityAPI = {
   /**
    * Get all Posts
-   * @returns {Promise<Post[] | ErrorResponse>}
+   * @returns {Promise<ActivityResponse[] | ErrorResponse>}
    */
   getAll: () => get(Endpoint),
   /**
    * Get all Posts of a User
    * @param {string} acellusID
-   * @returns {Promise<Post[] | ErrorResponse>}
+   * @returns {Promise<ActivityResponse[] | ErrorResponse>}
    */
   getUserPosts: acellusID => get(Endpoint, { acellusID }),
   /**
    * Get all Comments of a Post
    * @param {string} postID
-   * @returns {Promise<Comment[] | ErrorResponse>}
+   * @returns {Promise<CommentResponse[] | ErrorResponse>}
    */
   getComments: postID => get(Endpoint + "-comments", { postID }),
   /**
@@ -35,13 +50,9 @@ const ActivityAPI = {
    * postID: string,
    * message: sttring
    * }} body
+   * @returns {Promise<{} | ErrorResponse>}
    */
   postComment: body => post(Endpoint + "-comments", body),
 }
 
 export default ActivityAPI
-
-/**
- * @typedef {import("../features/profile/ProfileRoute").Post} Post
- * @typedef {import("../features/profile/ProfileRoute").Comment} Comment
- */

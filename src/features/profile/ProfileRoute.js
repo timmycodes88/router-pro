@@ -38,7 +38,7 @@ import { isErrorResponse } from "../../utils/request"
  * @property {string} postID
  * @property {string} acellusID
  * @property {string} body
- * @property {number} likes
+ * @property {number} [likes]
  * @property {Comment[]} [comments]
  *
  *
