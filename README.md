@@ -13,7 +13,7 @@ and Full JSDoc Coverage
 - Some Pages require multiple endpoints
   ex) Getting the Profile, Profile Image, Posts and getting the Comments of a post, etc.
 
-**1. Create your API Objects**
+### 1. Create your API Objects
 
 - These are Stand Alone Files with a default export
 
@@ -21,7 +21,7 @@ and Full JSDoc Coverage
 
 - See ProfileAPI.js & ActivityAPI.js
 
-**2. Create The Route File**
+### 2. Create The Route File
 
 1.  Create a file named _PageNameRoute.js_ in the /features/page-name folder
 2.  Create an Object Model that is already manipulated how you want to serve it to the page
@@ -32,7 +32,7 @@ and Full JSDoc Coverage
 
 - Lines (8-53) of ProfileRoute.js
 
-**3. Write your Async Loader Function**
+### 3. Write your Async Loader Function
 
 1. Make your Initial GET API calls to create the Object as Described above
 2. Check for error responses and throw Errors if they happen
@@ -43,14 +43,14 @@ and Full JSDoc Coverage
 
 NOTE: Every Loader/Action can get the Global Student object with `const student = await Student`
 
-**4. Create all your Action Types**
+### 4. Create all your Action Types
 
 1. This is where you plan all possible functions for a user
    ex) UPDATE_PREFERENCES, LIKE_POST
 
 - Lines (120-124) of ProfileRoute.js
 
-**5. Write your Async Action Function**
+### 5. Write your Async Action Function
 
 1. Get formData from props.request and then convert it to an Object
 2. Type Doc the possibilities of this Object
@@ -60,7 +60,7 @@ NOTE: Every Loader/Action can get the Global Student object with `const student 
 
 - Lines (126-164) of ProfileRoute.js
 
-**6. Write your async manipulator functions and add them to the Action Function**
+### 6. Write your async manipulator functions and add them to the Action Function
 
 - Name these in the camel case version of your ACTION_TYPES
 
@@ -71,12 +71,12 @@ NOTE: Every Loader/Action can get the Global Student object with `const student 
 
 - Lines (166-282) of ProfileRoute.js
 
-**7. Create 2 Hooks for Using the Route**
+### 7. Create 2 Hooks for Using the Route
 
 1. First one is for passing the data, generally named _usePageName_ - Lines (286-298) of ProfileRoute.js
 2. Second on is called _usePageNameActions_ and returns a object with each possible submit to be used on the front end - Lines (300-337) of ProfileRoute.js
 
-**8. CELEBRATE**
+### 8. CELEBRATE
 
 - You now have a complete Route file that can handle all request and is easy to use on the pages
 
@@ -86,18 +86,18 @@ NOTE 2: Every Function should have a JSDoc
 
 ## Step by Step Guide to using Route Hooks
 
-**0. Look into the JSDoc's of the route to see the Data and Actions you can use on this page**
+### 0. Look into the JSDoc's of the route to see the Data and Actions you can use on this page
 
 - These are at the bottom of the Route File and the Type Doc of the main data is at the Top of the File
 
-**1. Import your Data Hook and Populate your page**
+### 1. Import your Data Hook and Populate your page
 
 - Destructure when possible to make the code cleaner
 - Setup state's default value to the data from the Hook (see newPreferences state in Profile.js)
 
-**2. Import the Actions Hook and add functionality to your page**
+### 2. Import the Actions Hook and add functionality to your page
 
 - Note that with both of these hooks, they can be used anywhere within the page so avoid prop drilling
   and just use the hooks where they are needed
 
-**3. CELEBRATE this Page is DONE**
+### 3. CELEBRATE this Page is DONE
