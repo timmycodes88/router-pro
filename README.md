@@ -1,8 +1,8 @@
 # Created by TimmyCodes88
 
 This is a Project designed to outline how to effectively
-Retrieve Data from the API and handle Errors with Routes.
-Then also how to pass the Data & Functions Cleanly with hooks
+use APIs, loaders, actions and handle Errors with Routes.
+Then also how to pass the Data & Page Functions Cleanly with hooks
 and Full JSDoc Coverage
 
 ## Step by Step Guide to Building Route Files
