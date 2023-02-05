@@ -41,7 +41,6 @@ export default function Profile() {
         <h1>Profile</h1>
         <NavLink to="/">Home</NavLink>
       </Header>
-
       {isMyProfile && (
         <>
           <button onClick={editing ? save : edit}>
@@ -50,7 +49,6 @@ export default function Profile() {
           {editing && <button onClick={cancel}>Cancel</button>}
         </>
       )}
-
       <div>
         <h2>Preferences</h2>
         <Preferences
