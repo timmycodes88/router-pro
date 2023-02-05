@@ -24,9 +24,9 @@ and Full JSDoc Coverage
 ### 2. Create The Route File
 
 1.  Create a file named _PageNameRoute.js_ in the /features/page-name folder
-2.  Create an Object Model that is already manipulated how you want to serve it to the page
+2.  Create an Object Model (with typedef) that is already manipulated how you want to serve it to the page
 
-- You'll see the difference from ProfileResponse in ProfileAPI and Profile in ProfileRoute.js
+- You'll see the difference from a ProfileResponse in ProfileAPI and a Profile Model in ProfileRoute.js
 
 3.  Declare an Object with all Caps for your Global Variable
 
