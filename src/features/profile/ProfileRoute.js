@@ -6,12 +6,11 @@ import { Student } from "../../AppRoute"
 
 /**
  *
- * @param {{ params: { acellusID: string | undefined } }} props
- * @param {import("react-router-dom").RouteComponentProps["request"]["params"]} props.request.params
- * @returns {{
+ * @param {import("react-router-dom").LoaderFunctionArgs} props
+ * @returns {Promise<{
  *   profile: Profile,
  *   isMyProfile: boolean
- * }} Profile
+ * }>} Profile
  */
 export async function profileLoader({ params: { acellusID } }) {
   //* Get the Student Object
@@ -57,7 +56,7 @@ export async function profileLoader({ params: { acellusID } }) {
 
 /**
  *
- * @param {{ request: { method: 'PATCH', formData: () => Promise<FormData> } }} props
+ * @param {import("react-router-dom").ActionFunctionArgs} props
  * @returns {Promise<string | null>}
  */
 export async function profileAction({ request }) {
@@ -68,7 +67,7 @@ export async function profileAction({ request }) {
     case "PATCH":
       //* Get the Preferences Object from the Request Data
       const { acellusID } = await Student
-      await ProfileAPI.updatePreferences(acellusID, data)
+      await ProfileAPI.updatePreferences(acellusID, { preferences: data })
       return "success"
     default:
       return null
@@ -86,7 +85,7 @@ export async function profileAction({ request }) {
  * gpa: number | '-',
  * gold: number,
  * silver: number,
- * bronze: number,
+ * bronze: number
  * }} stats
  * @property {{
  * posts: {
@@ -97,10 +96,12 @@ export async function profileAction({ request }) {
  * }[]
  * }} activity
  * @property {string} [profileImg]
- * @property {Object} [preferences]
- * @property {string} [preferences.mood]
- * @property {string} [preferences.futureOccupation]
- * @property {string} [preferences.bgImg]
+ * @property {{
+ * mood?: string,
+ * futureOccupation?: string,
+ * bgImg?: string
+ * }} [preferences]
+ *
  *
  *
  * @returns {{
@@ -132,7 +133,3 @@ export function useProfileActions() {
     updatePreferences: preferences => submit(preferences, { method: "patch" }),
   }
 }
-
-/**
- * @typedef {import("react-router-dom").RouteComponentProps["request"]} Request
- */

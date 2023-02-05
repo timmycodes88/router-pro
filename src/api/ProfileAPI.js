@@ -16,7 +16,7 @@ const Endpoint = "profile"
  *
  * @typedef {Object} ErrorResponse
  * @property {string} error
- * @property {string} message
+ * @property {string} [message]
  */
 
 const ProfileAPI = {
@@ -42,7 +42,7 @@ const ProfileAPI = {
    * @returns {Promise<? | ErrorResponse>}
    */
   updatePreferences: (acellusID, preferences) =>
-    patch(Endpoint, acellusID + "/preferences", preferences),
+    patch(Endpoint, acellusID, preferences),
 }
 
 export default ProfileAPI

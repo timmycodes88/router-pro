@@ -19,12 +19,14 @@ export default function Profile() {
   //* State for Holding the New Preferences
   const [newPreferences, setNewPreferences] = useState(preferences)
 
-  console.log(newPreferences)
-
   //* Profile Functions
   const edit = () => setEditing(true)
   const save = () => {
     updatePreferences(newPreferences)
+    setEditing(false)
+  }
+  const cancel = () => {
+    setNewPreferences(preferences)
     setEditing(false)
   }
 
@@ -45,6 +47,7 @@ export default function Profile() {
           <button onClick={editing ? save : edit}>
             {editing ? "Save" : "Edit"}
           </button>
+          {editing && <button onClick={cancel}>Cancel</button>}
         </>
       )}
 
@@ -53,6 +56,7 @@ export default function Profile() {
         <Preferences
           {...newPreferences}
           setNewPreferences={setNewPreferences}
+          editing={editing}
         />
       </div>
       <Columns>
@@ -69,17 +73,59 @@ export default function Profile() {
   )
 }
 
-const Preferences = ({ mood, futureOccupation, setNewPreferences }) => {
+/**
+ *
+ * @param {Object} props
+ * @param {string} props.bgImg
+ * @param {string} props.mood
+ * @param {string} props.futureOccupation
+ * @param {boolean} props.editing
+ * @returns {JSX.Element} Preferences
+ */
+const Preferences = ({
+  mood,
+  futureOccupation,
+  bgImg,
+  setNewPreferences,
+  editing,
+}) => {
   const handleChange = e => {
     const { name, value } = e.target
     setNewPreferences(curr => ({ ...curr, [name]: value }))
   }
 
+  if (editing)
+    return (
+      <PreferencesWrapper>
+        <div>
+          <Label htmlFor="mood">Mood: </Label>
+          <Select name="mood" id="mood" value={mood} onChange={handleChange}>
+            <option value="Happy">Happy</option>
+            <option value="Excited">Excited</option>
+            <option value="Blissed">Blissed</option>
+            <option value="Ecstatic">Ecstatic</option>
+          </Select>
+        </div>
+        <div>
+          <Label htmlFor="futureOccupation">Future Occupation: </Label>
+          <Input
+            type="text"
+            name="futureOccupation"
+            id="futureOccupation"
+            value={futureOccupation}
+            onChange={handleChange}
+          />
+        </div>
+      </PreferencesWrapper>
+    )
+
   return (
-    <>
-      {mood && <p>Mood: {mood}</p>}
-      {futureOccupation && <p>Future Occupation: {futureOccupation}</p>}
-    </>
+    <PreferencesWrapper>
+      <div>{mood && <h5>Mood: {mood}</h5>}</div>
+      <div>
+        {futureOccupation && <h5>Future Occupation: {futureOccupation}</h5>}
+      </div>
+    </PreferencesWrapper>
   )
 }
 
@@ -102,8 +148,13 @@ const ProfileWrapper = styled.div(({ bgImg }) => [
   `,
 ])
 
+//* Profile Styles
 const Header = tw.header`flex justify-between items-center gap-4 px-10`
-
 const PersonCard = tw.div`flex items-center gap-4`
+const Columns = tw.div`flex justify-around mt-20`
 
-const Columns = tw.div`flex justify-around`
+//* Preferences Styles
+const PreferencesWrapper = tw.div`flex gap-10`
+const Label = tw.label`text-xl`
+const Select = tw.select`border-2 border-neutral-400 rounded-xl bg-neutral-700 text-white`
+const Input = tw.input``

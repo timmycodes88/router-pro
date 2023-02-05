@@ -11,8 +11,8 @@
       "firstName": "Tim",
       "lastName": "Van lerberg",
       "preferences": {
-        "mood": "Awesome",
-        "futureOccupation": "Astronaut"
+        "mood": "Ecstatic",
+        "futureOccupation": "Asasdtronaut"
       }
     },
     {
@@ -63,7 +63,7 @@
       "gold": 222,
       "silver": 333,
       "bronze": 1,
-      "GPA": 4.0
+      "GPA": 4
     }
   ],
   "activity": {
