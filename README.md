@@ -7,7 +7,7 @@ and Full JSDoc Coverage
 
 ## Step by Step Guide to Building Route Files
 
-**0. Plan the Required API Calls for Building the page's Features**
+### 0. Plan the Required API Calls for Building the page's Features
 
 - This is Generally some kind of main get and post actions
 - Some Pages require multiple endpoints
@@ -41,7 +41,7 @@ and Full JSDoc Coverage
 
 - Lines (55-118) of ProfileRoute.js
 
-NOTE: Every Loader/Action can get the logged-in student object with `const student = await Student`
+NOTE: Every Loader/Action can get the Global Student object with `const student = await Student`
 
 **4. Create all your Action Types**
 
