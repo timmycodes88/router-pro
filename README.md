@@ -76,8 +76,15 @@ NOTE: Every Loader/Action can get the Global Student object with `const student 
 
 ### 7. Create 2 Hooks for Using the Route
 
-1. First one is for passing the data named _usePageName_ - Lines (286-298) of ProfileRoute.js
-2. Second one is called _usePageNameActions_ and returns a object with each possible submit to easily be used on the front end (each submit will also have a type: ACTION_TYPE) - Lines (300-337) of ProfileRoute.js
+1. First one is for passing the data named _usePageName_
+
+- Here you use the useLoaderData() and useActionData() hooks to create a custom hook consolidating the data into a simple usePage hook
+- Lines (286-298) of ProfileRoute.js
+
+2. Second one is called _usePageNameActions_ and returns a object with each possible submit to easily be used on the front-end
+
+- You will use the useSubmit hook create the functions that submit the required data to your action. Each submit will have the required data and a type: ACTION_TYPE so the Action function knows what to do
+- Lines (300-337) of ProfileRoute.js
 
 ### 8. CELEBRATE
 
