@@ -28,13 +28,14 @@ export default function ActivityFeed({ activity }) {
  * @returns {JSX.Element} Post
  */
 const Post = ({ postID, name, body, likes, comments }) => {
-  const { loadComments, likePost } = useProfileActions()
+  const { loadComments, likePost, addComment } = useProfileActions()
 
   //* State for Showing Comments
   const [commentsOpen, setCommentsOpen] = useState(false)
 
   //* Functions
   const like = () => likePost(postID)
+  const comment = () => addComment(postID, "Hello World!")
   const showComments = () => {
     if (!comments) loadComments(postID)
     setCommentsOpen(true)
@@ -46,7 +47,12 @@ const Post = ({ postID, name, body, likes, comments }) => {
       <PostHeader>{name}</PostHeader>
       <PostBody>{body}</PostBody>
       <PostFooter>likes: {likes}</PostFooter>
-      <button onClick={like}>Like</button>
+      <button className="hidden" onClick={like}>
+        Like
+      </button>
+      <button className="hidden" onClick={comment}>
+        Comment
+      </button>
       <Comments>
         {commentsOpen &&
           comments?.map(({ commentID, body, name, imageURL }) => (

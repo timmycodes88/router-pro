@@ -140,16 +140,20 @@ export async function profileAction({ request }) {
 
   switch (data.type) {
     case UPDATE_PREFERENCES:
-      await updatePreferences(data.preferences)
+      const preferences = await updatePreferences(data.preferences)
+      PROFILE.preferences = preferences
       break
     case LIKE_POST:
-      await likePost(data.postID)
+      const activity = await likePost(data.postID)
+      PROFILE.activity = activity
       break
     case ADD_COMMENT:
-      await addComment(data.postID, data.message)
+      const activity2 = await addComment(data.postID, data.message)
+      PROFILE.activity = activity2
       break
     case GET_COMMENTS:
-      await getComments(data.postID)
+      const activity3 = await getComments(data.postID)
+      PROFILE.activity = activity3
       break
     default:
       throw new Error("Invalid Action Type")
@@ -162,8 +166,9 @@ export async function profileAction({ request }) {
 //* [ these are async functions that update PROFILE before it is returned in the ACTION ]
 
 /**
- * Updates the Preferences
- * @param {Preferences} preferences
+ * Updates the Preferences to the Backend and Returns the Updated Preferences
+ * @param {Preferences}
+ * @returns {Promise<Preferences>} preferences
  */
 async function updatePreferences(preferences) {
   //! Make sure required args were provided
@@ -176,13 +181,14 @@ async function updatePreferences(preferences) {
   })
   //! Check for Errors
   if (isErrorResponse(res)) throw new Error("Failed Updating Preferences")
-  //* Update the Global Profile
-  PROFILE.preferences = preferences
+  //* Used to Update the Global Profile
+  return preferences
 }
 
 /**
- * Likes a Post
+ * Likes a Post on the backend and returns the updated Activity Array
  * @param {string} postID
+ * @returns {Promise<Post[]>} activity
  */
 async function likePost(postID) {
   //! Make sure required args were provided
@@ -193,20 +199,23 @@ async function likePost(postID) {
   const res = await ActivityAPI.patchLike(postID, { acellusID })
   //! Check for Errors
   if (isErrorResponse(res)) throw new Error("Failed Liking Post")
-  //* Update the Global Profile
-  PROFILE.activity = PROFILE.activity.map(post => {
+  //* Create a new Activity Array with the updated Post
+  const activity = PROFILE.activity.map(post => {
     if (post.postID === postID) {
       post.likes = post.likes + 1
       post.liked = true
     }
     return post
   })
+  //* Used to Update the Global Profile
+  return activity
 }
 
 /**
- * Adds a comment to a post, also refreshes the comments after it's posted
+ * Adds a comment to a post, also refreshes the comments after it's posted and returns the updated activity array
  * @param {string} postID
  * @param {string} message
+ * @returns {Promise<Post[]>} activity
  */
 async function addComment(postID, message) {
   //! Make sure required args were provided
@@ -217,12 +226,15 @@ async function addComment(postID, message) {
   //! Check for Errors
   if (isErrorResponse(res)) throw new Error("Failed posting Comment")
   //* Refetch Comments for this post
-  await getComments(postID)
+  const activity = await getComments(postID)
+  //* Used to Update the Global Profile
+  return activity
 }
 
 /**
- * Adds Comments to the Global Profile
+ * Get comments for a post and returns a new activity promise
  * @param {string} postID
+ * @returns {Promise<Post[]>} activity
  */
 async function getComments(postID) {
   //! Make sure required args were provided
@@ -258,11 +270,14 @@ async function getComments(postID) {
 
   const newComments = await Promise.all(commentPromises)
 
-  //* Update the Global Profile with the Modified comments
-  PROFILE.activity = PROFILE.activity.map(post => {
+  //* Create activity array of Profile with the Modified comments
+  const activity = PROFILE.activity.map(post => {
     if (post.postID === postID) post.comments = newComments
     return post
   })
+
+  //* Used to Update the Global Profile.activity
+  return activity
 }
 
 //* ------------- FRONTEND HOOKS -------------
