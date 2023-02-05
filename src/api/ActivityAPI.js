@@ -1,4 +1,4 @@
-import { get, patch } from "../utils/request"
+import { get, patch, post } from "../utils/request"
 
 const Endpoint = "activity"
 
@@ -26,6 +26,14 @@ const ActivityAPI = {
    * @returns {Promise<{} | ErrorResponse>}
    */
   patchLike: postID => patch(Endpoint + "/posts", postID, { likes: 5 }),
+  /**
+   * Post a Comment
+   * @param {{
+   * postID: string,
+   * message: sttring
+   * }} body
+   */
+  postComment: body => post(Endpoint + "-comments", body),
 }
 
 export default ActivityAPI

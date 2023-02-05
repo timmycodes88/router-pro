@@ -53,7 +53,7 @@ import { isErrorResponse } from "../../utils/request"
 let PROFILE
 
 /**
- *
+ * This is the Profile Loader
  * @param {import("react-router-dom").LoaderFunctionArgs} props
  * @returns {Promise<{
  *   profile: Profile,
@@ -125,8 +125,9 @@ export async function profileLoader({ params: { acellusID } }) {
 const UPDATE_PREFERENCES = "UPDATE_PREFERENCES"
 const LIKE_POST = "LIKE_POST"
 const GET_COMMENTS = "GET_COMMENTS"
+const ADD_COMMENT = "ADD_COMMENT"
 /**
- *
+ * This is the Profile Action
  * @param {import("react-router-dom").ActionFunctionArgs} props
  * @returns {Promise<string | null>}
  */
@@ -136,7 +137,7 @@ export async function profileAction({ request }) {
   /**
    * @typedef {Object} data
    * @property {UPDATE_PREFERENCES | LIKE_POST | GET_COMMENTS} type
-   * @property {Object} [preferences]
+   * @property {Preferences} [preferences]
    * @property {string} [postID]
    */
   const data = Object.fromEntries(formData.entries())
@@ -147,6 +148,9 @@ export async function profileAction({ request }) {
       break
     case LIKE_POST:
       await likePost(data.postID)
+      break
+    case ADD_COMMENT:
+      await addComment(data.postID, data.message)
       break
     case GET_COMMENTS:
       await getComments(data.postID)
@@ -159,11 +163,16 @@ export async function profileAction({ request }) {
   return { profile: PROFILE }
 }
 
+//* ACTION FUNCTIONS
+//* [ these are async functions that update PROFILE before it is returned in the ACTION ]
+
 /**
  * Updates the Preferences
  * @param {Preferences} preferences
  */
 async function updatePreferences(preferences) {
+  //! Insure we got the Data
+  if (!preferences) throw new Error("Need Preferences to run this type")
   //* Get the Student's ID
   const { acellusID } = await Student
   //* Update the Preferences
@@ -198,6 +207,23 @@ async function likePost(postID) {
   //   return post
   // })
   console.log("Action thinks you liked it")
+}
+
+/**
+ * Adds a comment to a post, also refreshes the comments after it's posted
+ * @param {string} postID
+ * @param {string} message
+ */
+async function addComment(postID, message) {
+  //! Make sure required args were provided
+  if (!postID || !message)
+    throw new Error("Must had a PostID and Message to add a Comment")
+  //* Post the comment
+  const res = await ActivityAPI.postComment({ postID, body: message })
+  //! Check for Errors
+  if (isErrorResponse(res)) throw new Error("Failed posting Comment")
+  //* Refetch Comments for this post
+  await getComments(postID)
 }
 
 /**
@@ -239,6 +265,8 @@ async function getComments(postID) {
   })
 }
 
+//* FRONTEND HOOKS
+
 /**
  * Get Data for Profile Modal
  * @returns {{
@@ -257,6 +285,7 @@ export function useProfile() {
  * @returns {{
  *  updatePreferences: (preferences: Preferences) => void
  *  loadComments: (postID: string) => void
+ *  addComment: (postID: string, message: string) => void
  *  likePost: (postID: string) => void
  * }} Actions
  */
@@ -271,11 +300,18 @@ export function useProfileActions() {
     updatePreferences: preferences =>
       submit({ preferences, type: UPDATE_PREFERENCES }, { method: "post" }),
     /**
-     * Adds Comments to the Post based on it's Post ID
+     * Append a Post's Comments to the Post based on it's Post ID
      * @param {string} postID
      */
     loadComments: postID =>
       submit({ postID, type: GET_COMMENTS }, { method: "post" }),
+    /**
+     * Post a Comment on a Post based on it's ID
+     * @param {string} postID
+     * @param {string} message
+     */
+    addComment: (postID, message) =>
+      submit({ postID, message, type: ADD_COMMENT }, { method: "post" }),
     /**
      * Likes the Post based on it's Post ID
      * @param {string} postID
