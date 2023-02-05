@@ -66,15 +66,18 @@ NOTE: Every Loader/Action can get the Global Student object with `const student 
 
 1. Check that you have the right args, throw error if not
 2. Make API calls with the data
-3. Return an Updated aspect of your Global Variable
-4. Go to your Action and await this function and update the Global variable with the new data
+3. Check if isErrorResponse and throw error if it is
+4. Return an Updated aspect of your Global Variable
+5. Go back to your Action Function and await this function, then update the Global variable with the new data
 
 - Lines (166-282) of ProfileRoute.js
+
+- These can be shared between routes if needed - ex) Classmates/Profile Activity Feed
 
 ### 7. Create 2 Hooks for Using the Route
 
 1. First one is for passing the data named _usePageName_ - Lines (286-298) of ProfileRoute.js
-2. Second one is called _usePageNameActions_ and returns a object with each possible submit to easily be used on the front end - Lines (300-337) of ProfileRoute.js
+2. Second one is called _usePageNameActions_ and returns a object with each possible submit to easily be used on the front end (each submit will also have a type: ACTION_TYPE) - Lines (300-337) of ProfileRoute.js
 
 ### 8. CELEBRATE
 
