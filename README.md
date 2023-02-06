@@ -1,7 +1,7 @@
 # Created by TimmyCodes88
 
 This is a Project designed to outline how to effectively
-use APIs, loaders, actions and handle Errors with Routes.
+use APIs, loaders, actions and handle errors with Routes.
 Then also how to pass the Data & Page Functions Cleanly with hooks
 and Full JSDoc Coverage
 
