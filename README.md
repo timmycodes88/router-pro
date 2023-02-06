@@ -112,4 +112,4 @@ NOTE 2: Every Function should have a JSDoc
 
 - This Page is Fully Populated and Functional
 
-## Twin.Macro's TW, CSS and Styled Components
+## TW, CSS and Styled Components
