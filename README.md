@@ -39,7 +39,7 @@ and Full JSDoc Coverage
 
 - Lines (55-118) of ProfileRoute.js
 
-NOTE: Every Loader/Action can get the Global Student object with `const student = await Student`
+NOTE: Every Route can get the Global Student object with `const student = await Student`
 
 ### 4. Create all your Action Types
 
@@ -108,4 +108,8 @@ NOTE 2: Every Function should have a JSDoc
 - use the action functions to make your own onClick functions and wire them to the buttons
 - Note that with both of these hooks, they can be used anywhere within the page so avoid prop drilling and just use the hooks where they are needed
 
-### 3. CELEBRATE this Page is Fully Populated and Functional
+### 3. CELEBRATE
+
+- This Page is Fully Populated and Functional
+
+## Twin.Macro's TW, CSS and Styled Components
