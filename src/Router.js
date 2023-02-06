@@ -8,6 +8,7 @@ import Profile from "./pages/Profile"
 
 export const router = createBrowserRouter([
   {
+    id: "app",
     path: "/",
     element: <App />,
     loader: appLoader,

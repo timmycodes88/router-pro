@@ -10,7 +10,10 @@
       "acellusID": "1",
       "firstName": "Tim",
       "lastName": "Van lerberg",
-      "preferences": "[object Object]"
+      "preferences": {
+        "mood": "Blissed",
+        "futureOccupation": "Astronaut"
+      }
     },
     {
       "id": 2,

@@ -50,6 +50,8 @@ import { isErrorResponse } from "../../utils/request"
  * @property {string} name
  * @property {string} [imageURL]
  */
+
+/**@typedef {Profile | undefined} PROFILE */
 let PROFILE //* This is the Global Profile Object
 
 /**
@@ -88,7 +90,7 @@ export async function profileLoader({ params: { acellusID } }) {
   ])
 
   //! Check for Errors
-  if (isErrorResponse(profile)) throw new Error("Failed Fetching Profile Image")
+  if (isErrorResponse(imageURL)) throw new Error("Error getting Profile Image")
   if (isErrorResponse(stats)) throw new Error("Problem Fetching Stats")
   if (isErrorResponse(activity)) throw new Error("Problem Fetching Activity")
 
@@ -102,7 +104,7 @@ export async function profileLoader({ params: { acellusID } }) {
   if (activity?.posts)
     // Add the Name and Profile Image to each Post
     profile.activity = activity.posts
-      //So I'm filtering out the post that don't match the acellusID because the API is returning all posts
+      //So I'm filtering out the post that don't match the acellusID because the API is returning all posts even when i query for one smh
       .filter(post => post.acellusID === profile.acellusID)
       .map(post => ({
         ...post,
@@ -138,23 +140,21 @@ export async function profileAction({ request }) {
    * @property {string} [postID]
    */
   const data = Object.fromEntries(formData.entries())
-
+  console.log(data)
   switch (data.type) {
     case UPDATE_PREFERENCES:
-      const preferences = await updatePreferences(data.preferences)
-      PROFILE.preferences = preferences
+      PROFILE.preferences = await updatePreferences(
+        JSON.parse(data.preferences)
+      )
       break
     case LIKE_POST:
-      const activity = await likePost(data.postID)
-      PROFILE.activity = activity
+      PROFILE.activity = await likePost(data.postID)
       break
     case ADD_COMMENT:
-      const activity2 = await addComment(data.postID, data.message)
-      PROFILE.activity = activity2
+      PROFILE.activity = await addComment(data.postID, data.message)
       break
     case GET_COMMENTS:
-      const activity3 = await getComments(data.postID)
-      PROFILE.activity = activity3
+      PROFILE.activity = await getComments(data.postID)
       break
     default:
       throw new Error("Invalid Action Type")
@@ -177,9 +177,8 @@ async function updatePreferences(preferences) {
   //* Get the Student's ID
   const { acellusID } = await Student
   //* Update the Preferences
-  const res = await ProfileAPI.updatePreferences(acellusID, {
-    preferences: preferences,
-  })
+  console.log(preferences)
+  const res = await ProfileAPI.updatePreferences(acellusID, { preferences })
   //! Check for Errors
   if (isErrorResponse(res)) throw new Error("Failed Updating Preferences")
   //* Used to Update the Global Profile
@@ -314,7 +313,10 @@ export function useProfileActions() {
      * @param {Preferences} preferences
      */
     updatePreferences: preferences =>
-      submit({ preferences, type: UPDATE_PREFERENCES }, { method: "post" }),
+      submit(
+        { preferences: JSON.stringify(preferences), type: UPDATE_PREFERENCES },
+        { method: "post" }
+      ),
     /**
      * Append a Post's Comments to the Post based on it's Post ID
      * @param {string} postID
