@@ -73,13 +73,13 @@ export async function profileLoader({ params: { acellusID } }) {
   const requestAcellusID = acellusID ? acellusID : student.acellusID
 
   //* Get the initial Profile Response
-  let profile = await ProfileAPI.get(requestAcellusID)
+  const profile = await ProfileAPI.get(requestAcellusID)
 
   //! Check for Errors
   if (isErrorResponse(profile)) throw new Error("Profile Not Found")
 
   //* Manipulate the Profile
-  profile.name = `${profile.firstName} ${profile.lastName[0]}`
+  profile.name = `${profile.firstName} ${profile.lastName[0]}.`
   profile.preferences = profile.preferences || {}
 
   //* Get the ProfileAvatar, Stats & Activity
@@ -128,7 +128,7 @@ const ADD_COMMENT = "ADD_COMMENT"
 /**
  * This is the Profile Action
  * @param {import("react-router-dom").ActionFunctionArgs} props
- * @returns {Promise<string | null>}
+ * @returns {Promise<{profile: Profile}>}
  */
 export async function profileAction({ request }) {
   const formData = await request.formData()
@@ -143,18 +143,16 @@ export async function profileAction({ request }) {
   console.log(data)
   switch (data.type) {
     case UPDATE_PREFERENCES:
-      PROFILE.preferences = await updatePreferences(
-        JSON.parse(data.preferences)
-      )
+      await updatePreferences(JSON.parse(data.preferences))
       break
     case LIKE_POST:
-      PROFILE.activity = await likePost(data.postID)
+      await likePost(data.postID)
       break
     case ADD_COMMENT:
-      PROFILE.activity = await addComment(data.postID, data.message)
+      await addComment(data.postID, data.message)
       break
     case GET_COMMENTS:
-      PROFILE.activity = await getComments(data.postID)
+      await getComments(data.postID)
       break
     default:
       throw new Error("Invalid Action Type")
@@ -169,7 +167,7 @@ export async function profileAction({ request }) {
 /**
  * Updates the Preferences to the Backend and Returns the Updated Preferences
  * @param {Preferences}
- * @returns {Promise<Preferences>} preferences
+ * @returns {Promise<void>} Promise to Update PROFILE.preferences
  */
 async function updatePreferences(preferences) {
   //! Make sure required args were provided
@@ -177,18 +175,17 @@ async function updatePreferences(preferences) {
   //* Get the Student's ID
   const { acellusID } = await Student
   //* Update the Preferences
-  console.log(preferences)
   const res = await ProfileAPI.updatePreferences(acellusID, { preferences })
   //! Check for Errors
   if (isErrorResponse(res)) throw new Error("Failed Updating Preferences")
-  //* Used to Update the Global Profile
-  return preferences
+  //* Update the Global Profile
+  PROFILE.preferences = preferences
 }
 
 /**
  * Likes a Post on the backend and returns the updated Activity Array
  * @param {string} postID
- * @returns {Promise<Post[]>} activity
+ * @return {Promise<void>} Promise to Update PROFILE.activity
  */
 async function likePost(postID) {
   //! Make sure required args were provided
@@ -207,15 +204,15 @@ async function likePost(postID) {
     }
     return post
   })
-  //* Used to Update the Global Profile
-  return activity
+  //* Update the Global Profile
+  PROFILE.activity = activity
 }
 
 /**
  * Adds a comment to a post, also refreshes the comments after it's posted and returns the updated activity array
  * @param {string} postID
  * @param {string} message
- * @returns {Promise<Post[]>} activity
+ * @returns {Promise<void>} Promise to post comment and update PROFILE.activity
  */
 async function addComment(postID, message) {
   //! Make sure required args were provided
@@ -226,15 +223,13 @@ async function addComment(postID, message) {
   //! Check for Errors
   if (isErrorResponse(res)) throw new Error("Failed posting Comment")
   //* Refetch Comments for this post
-  const activity = await getComments(postID)
-  //* Used to Update the Global Profile
-  return activity
+  await getComments(postID)
 }
 
 /**
  * Get comments for a post and returns a new activity promise
  * @param {string} postID
- * @returns {Promise<Post[]>} activity
+ * @returns {Promise<void>} Promise to update LIBRARY.activity["postID"].comments
  */
 async function getComments(postID) {
   //! Make sure required args were provided
@@ -277,7 +272,7 @@ async function getComments(postID) {
   })
 
   //* Used to Update the Global Profile.activity
-  return activity
+  PROFILE.activity = activity
 }
 
 //* ------------- FRONTEND HOOKS -------------
