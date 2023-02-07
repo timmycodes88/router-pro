@@ -1,4 +1,4 @@
-import { get, patch, post } from "../utils/request"
+import { get, patch } from "../utils/request"
 
 const Endpoint = "profile"
 

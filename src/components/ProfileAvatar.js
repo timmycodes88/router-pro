@@ -4,9 +4,10 @@ import tw, { styled } from "twin.macro"
 export default function ProfileAvatar({ size, url, name }) {
   if (url) return <ImageAvatar url={url} name={name} size={size} />
   const initials = name
-    .split(" ")
-    .map(i => i[0])
-    .join("")
+    .split(" ") //"Tim Van Lerberg" => ["Tim", "Van", "Lerberg"]
+    .map(i => i[0]) //["Tim", "Van", "Lerberg"] => "T", "V", "L"
+    .join("") //"T", "V", "L" => "TVL"
+    .slice(0, 2) // "TVL" => "TV"
   return <InitialsAvatar initials={initials} size={size} />
 }
 

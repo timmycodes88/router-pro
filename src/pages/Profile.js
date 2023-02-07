@@ -29,6 +29,10 @@ export default function Profile() {
     setNewPreferences(preferences)
     setEditing(false)
   }
+  const handleChangePreferences = e => {
+    const { name, value } = e.target
+    setNewPreferences(curr => ({ ...curr, [name]: value }))
+  }
 
   return (
     <ProfileWrapper bgImg={preferences.bgImg}>
@@ -53,7 +57,7 @@ export default function Profile() {
         <h2>Preferences</h2>
         <Preferences
           {...newPreferences}
-          setNewPreferences={setNewPreferences}
+          onChange={handleChangePreferences}
           editing={editing}
         />
       </div>
@@ -80,24 +84,13 @@ export default function Profile() {
  * @param {boolean} props.editing
  * @returns {JSX.Element} Preferences
  */
-const Preferences = ({
-  mood,
-  futureOccupation,
-  bgImg,
-  setNewPreferences,
-  editing,
-}) => {
-  const handleChange = e => {
-    const { name, value } = e.target
-    setNewPreferences(curr => ({ ...curr, [name]: value }))
-  }
-
+const Preferences = ({ mood, futureOccupation, onChange, editing }) => {
   if (editing)
     return (
       <PreferencesWrapper>
         <div>
           <Label htmlFor="mood">Mood: </Label>
-          <Select name="mood" id="mood" value={mood} onChange={handleChange}>
+          <Select name="mood" id="mood" value={mood} onChange={onChange}>
             <option value="Happy">Happy</option>
             <option value="Excited">Excited</option>
             <option value="Blissed">Blissed</option>
@@ -111,7 +104,7 @@ const Preferences = ({
             name="futureOccupation"
             id="futureOccupation"
             value={futureOccupation}
-            onChange={handleChange}
+            onChange={onChange}
           />
         </div>
       </PreferencesWrapper>
